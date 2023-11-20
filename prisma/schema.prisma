@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,29 +8,33 @@ datasource db {
 }
 
 model Usuario {
-  id Int    @id @default(autoincrement())
-  nome String
-  email String
-  lances Lance[]
+  id       Int      @id @default(autoincrement())
+  nome     String
+  email    String
+  lances   Lance[]
+  leiloes Leilao[]
 }
 
 model Leilao {
-  id Int    @id @default(autoincrement())
-  produto String
-  preco Float
+  id         Int       @id @default(autoincrement())
+  produto    String
+  preco      Float
   dataLimite DateTime
-  lances Lance[]
+  donoId     Int
+  dono       Usuario   @relation(fields: [donoId], references: [id])
+  lances     Lance[]
 }
 
 model Lance {
-  id Int    @id @default(autoincrement())
-  valor Float
-  comprador Usuario[]
-  leilao Leilao[]
+  id         Int      @id @default(autoincrement())
+  valor      Float
+  compradorId Int
+  comprador  Usuario  @relation(fields: [compradorId], references: [id])
+  leilaoId   Int
+  leilao     Leilao   @relation(fields: [leilaoId], references: [id])
 }
 
 model Job {
-  id Int    @id @default(autoincrement())
-  fecharLeilao Float
+  id           Int      @id @default(autoincrement())
+  FecharLeilao Float
 }
-
